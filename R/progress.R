@@ -1,69 +1,116 @@
-poll_progress <- function(fs, temp_file, rule_max_width) {
+# nocov start
 
-  debug <- getOption("future.debug", FALSE)
-  if (debug) mdebug("Polling for progress ...")
+poll_progress <- function(futures, file, n_x) {
+  symbol <- get_progress_symbol()
 
-  not_resolved_once <- !all_resolved(fs)
+  prefix <- "Progress: "
+  suffix <- " 100%"
 
-  # Poll the files until all the jobs are complete
-  while (!all_resolved(fs)) {
+  width_prefix <- nchar(prefix)
+  width_suffix <- nchar(suffix)
+  width_carriage <- 1L
 
-    # -1 because of empty tick needed to init file.
-    # Otherwise if we get here too quickly it gives error
-    temp_file_con <- file(temp_file, "r")
-    n_ticks <- length(readLines(temp_file_con)) - 1
-    close(temp_file_con)
+  stderr <- stderr()
 
-    max_width <- console_width()
-    progress_width <- 10
-    finish_width <- 5
-    carriage_width <- 1
-    filler_width <- max_width - progress_width - finish_width - carriage_width
+  while (any_running(futures)) {
+    con <- file(file, open = "r")
+    n_ticks <- get_n_ticks(con)
+    close(con)
 
-    rule_width <- floor(filler_width * n_ticks / rule_max_width)
-    space_width <- filler_width - rule_width
+    # Console width might change while we poll
+    width_max <- console_width()
+    width_usable <- width_max - width_prefix - width_suffix - width_carriage
 
-    spaces <- paste0(rep(" ", times = space_width), collapse = "")
+    width_rule <- floor(width_usable * n_ticks / n_x)
+    width_space <- width_usable - width_rule
 
-    # The one line - symbol came from cli::symbols$line
-    progress <- paste0(rep("\u2500", times = rule_width), collapse = "")
-    all_text <- paste0("Progress: ", progress, spaces, " 100%")
+    space <- paste0(rep(" ", times = width_space), collapse = "")
+    rule <- paste0(rep(symbol, times = width_rule), collapse = "")
 
-    cat("\r", all_text)
+    out <- paste0(prefix, rule, space, suffix)
+
+    cat("\r", out, file = stderr)
     utils::flush.console()
   }
+}
 
-  if(not_resolved_once) {
-    # Separate progress from output
-    max_width <- console_width()
-    progress_width <- 10
-    finish_width <- 5
-    carriage_width <- 1
-    filler_width <- max_width - progress_width - finish_width - carriage_width
-    progress <- paste0(rep("\u2500", times = filler_width), collapse = "")
-    all_text <- paste0("Progress: ", progress, " 100%")
-    cat("\r", all_text)
-    cat("\n\n")
+get_n_ticks <- function(con) {
+  line <- readLines(con, n = 1L, warn = FALSE)
+
+  if (length(line) == 0L) {
+    line <- ""
   }
 
-  if (debug) mdebug("Polling for progress ... DONE")
-
+  nchar(line)
 }
 
-
-# Needed for progress updates
-update_progress <- function (file) {
-  progress_text <- sprintf("tick\n")
-  cat(progress_text, file = file, append = TRUE)
-}
-
-# Needed for progress updates
-all_resolved <- function (futures) {
-  each_resolved <- vapply(futures, future::resolved, FALSE)
-  all(each_resolved)
+any_running <- function(futures) {
+  !all(future::resolved(futures))
 }
 
 console_width <- function() {
   width <- Sys.getenv("RSTUDIO_CONSOLE_WIDTH", getOption("width", 80))
   as.integer(width)
 }
+
+# ------------------------------------------------------------------------------
+
+# Adapted from cli's onload properties
+# to dynamically switch depending on utf8 availability
+get_progress_symbol <- function() {
+  if (is_utf8_output()) {
+    "\u2500"
+  } else {
+    "-"
+  }
+}
+
+is_utf8_output <- function() {
+  l10n_info()$`UTF-8` && !is_latex_output()
+}
+
+is_latex_output <- function () {
+  if (!("knitr" %in% loadedNamespaces())) {
+    return(FALSE)
+  }
+
+  get("is_latex_output", asNamespace("knitr"))()
+}
+
+# ------------------------------------------------------------------------------
+
+assert_progress <- function(progress) {
+  if (!is_bool(progress)) {
+    abort("`.progress` must be a single logical value.")
+  }
+
+  invisible(progress)
+}
+
+# ------------------------------------------------------------------------------
+
+# - Sequential blocks in the `future()` call, so no progress is ever shown
+# - Cluster is generally used for multi-computer setups, and would end up
+#   writing into files on the remote workers, which would never be shown.
+progress_enabled_plans <- c(
+  "multicore",
+  "multisession",
+  "multiprocess"
+)
+
+reconcile_progress_with_strategy <- function(progress) {
+  if (is_false(progress)) {
+    return(progress)
+  }
+
+  plan <- future::plan()
+  progress_enabled_plan <- inherits_any(plan, progress_enabled_plans)
+
+  if (!progress_enabled_plan) {
+    progress <- FALSE
+  }
+
+  progress
+}
+
+# nocov end
