@@ -1,13 +1,13 @@
-9e87e4f8adb27d2c2e11ca49ac39789e *DESCRIPTION
+9c51db26de77de1233c29deee0285487 *DESCRIPTION
 0578b84ee28af684bb8cefb871d81d75 *LICENSE
 af1cc35451d58119cee6451da611608c *NAMESPACE
-e207b41fd1640da4ceed3d86b071241e *NEWS.md
+20839463907ea747d8a4e841f9307ab4 *NEWS.md
 db7431ba121e59feb1783bb83b7eca3c *R/chunks.R
 c3a2f39d68f94a2633097d71fb00d77c *R/furrr-options.R
 d158cb32ac297e8987551dd456c1ec82 *R/furrr-package.R
 381b66030ecc57f3ce3a437e66ccfd9e *R/future-imap.R
-13372e437d1b49589b67fcc2d921ad15 *R/future-invoke-map.R
-e3fc1190b30d7fa0596f1a0a161eeb34 *R/future-map.R
+0d3bf5bdd91c381dcd57392dcc0f0824 *R/future-invoke-map.R
+3e95a80647105788cee913d2d7c28e37 *R/future-map.R
 c40f46a6981198f902b528cf7226431f *R/future-map2.R
 c7bc3822aaca9e79e267a00a88afde9b *R/future-modify.R
 3a3ee84833668107b5b8bfd863ad0687 *R/future-pmap.R
@@ -33,8 +33,8 @@ c3978703d8f40f2679795335715e98f4 *man/figures/lifecycle-experimental.svg
 17a23c52569a5725b504817ce798de19 *man/furrr-package.Rd
 5f714cc21ed4d840519106528785c6d7 *man/furrr_options.Rd
 96a5c62c806a9c572bd44c0e8f08a5aa *man/future_imap.Rd
-6ac26cdc5bc5c99ebdf034f7a15e2aad *man/future_invoke_map.Rd
-c810178c7f24c1b6106e898a3a425c30 *man/future_map.Rd
+381399a775f8e36a99351117bb889e83 *man/future_invoke_map.Rd
+ded7c4f9d2c235f621319221b4127dd2 *man/future_map.Rd
 953b987dbc81939af3d2ed7217b28f76 *man/future_map2.Rd
 f1a626b1cc35d737f252e6bda59bf455 *man/future_map_if.Rd
 3ecca365d0d820cc6c8df81f345edb32 *man/future_modify.Rd
@@ -42,7 +42,7 @@ e87bfc1136ed0b350a4a0c642e69bd48 *man/future_options.Rd
 975564c058a476dbdbc9e79e7ffd1257 *tests/testthat.R
 e27ad471d4615964a87277153bd44155 *tests/testthat/helper-deprecation.R
 ab727c7974a2a6795e576dc48341e8f5 *tests/testthat/helper-eval.R
-dc2a1e890aacae480a970800a5291544 *tests/testthat/helper-furrr-test-that.R
+eb2c9caea00197e37cf8a4c3366680ff *tests/testthat/helper-furrr-test-that.R
 2d2661ef9917e33d078219f504074ab3 *tests/testthat/test-chunks.R
 c32d3f8296ad2f44171ca71eb7dfda69 *tests/testthat/test-deprecation.R
 76c8457dc5bc41cbcc806208efe36afc *tests/testthat/test-furrr-options.R
