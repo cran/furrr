@@ -1,9 +1,9 @@
-9c51db26de77de1233c29deee0285487 *DESCRIPTION
+58a34e4f93a27e13fc46d0f9a2f5755a *DESCRIPTION
 0578b84ee28af684bb8cefb871d81d75 *LICENSE
 af1cc35451d58119cee6451da611608c *NAMESPACE
-20839463907ea747d8a4e841f9307ab4 *NEWS.md
+4ea33d734abf08d66eb68a0d13e48f89 *NEWS.md
 db7431ba121e59feb1783bb83b7eca3c *R/chunks.R
-c3a2f39d68f94a2633097d71fb00d77c *R/furrr-options.R
+ab398051fe87eb5b81d7769a313ac9e3 *R/furrr-options.R
 d158cb32ac297e8987551dd456c1ec82 *R/furrr-package.R
 381b66030ecc57f3ce3a437e66ccfd9e *R/future-imap.R
 0d3bf5bdd91c381dcd57392dcc0f0824 *R/future-invoke-map.R
@@ -19,7 +19,7 @@ ba06f94cc7c1cede6cfb1ca14bb78627 *R/seed.R
 bb8af0092ce03da0ee73d1b306b63867 *R/template.R
 52529f2d8582615eb9d1b8af25d43292 *R/utils-purrr.R
 84a6dbf6e72710b9fe177506f13e8f5c *R/utils.R
-9e52a92de0a65a26d2a947f7f05fde4d *README.md
+1f5c00bc0d189d9eab1243c061b584b2 *README.md
 cb1e46f469cfbbbde29c8b5113e1d789 *man/figures/lifecycle-archived.svg
 c0d2e5a54f1fa4ff02bf9533079dd1f7 *man/figures/lifecycle-defunct.svg
 a1b8c987c676c16af790f563f96cbb1f *man/figures/lifecycle-deprecated.svg
@@ -40,11 +40,11 @@ f1a626b1cc35d737f252e6bda59bf455 *man/future_map_if.Rd
 3ecca365d0d820cc6c8df81f345edb32 *man/future_modify.Rd
 e87bfc1136ed0b350a4a0c642e69bd48 *man/future_options.Rd
 975564c058a476dbdbc9e79e7ffd1257 *tests/testthat.R
-e27ad471d4615964a87277153bd44155 *tests/testthat/helper-deprecation.R
+d9a00af1b56055cbcdd03e7f545d9dd6 *tests/testthat/_snaps/deprecation.md
 ab727c7974a2a6795e576dc48341e8f5 *tests/testthat/helper-eval.R
-eb2c9caea00197e37cf8a4c3366680ff *tests/testthat/helper-furrr-test-that.R
+63ceb6001142c5e765ae69bedd29777a *tests/testthat/helper-furrr-test-that.R
 2d2661ef9917e33d078219f504074ab3 *tests/testthat/test-chunks.R
-c32d3f8296ad2f44171ca71eb7dfda69 *tests/testthat/test-deprecation.R
+d03b6e38150c0ed81d42afbc6b0aa0ee *tests/testthat/test-deprecation.R
 76c8457dc5bc41cbcc806208efe36afc *tests/testthat/test-furrr-options.R
 872253a9fe44edaf6c17fbd0b25d3e1c *tests/testthat/test-future-imap.R
 e4ef961b14b7faebd6a203e9b557dc16 *tests/testthat/test-future-invoke-map.R
