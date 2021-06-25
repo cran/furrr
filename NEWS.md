@@ -1,3 +1,10 @@
+# furrr 0.2.3
+
+* Preemptively updated tests related to upcoming changes in testthat (#196).
+
+* Updated snapshot tests failing on CI related to changes in lifecycle 1.0.0
+  (#193).
+
 # furrr 0.2.2
 
 * Updated a test to fix an issue with upcoming lifecycle 1.0.0.
@@ -41,21 +48,21 @@
 
 ## Features / Fixes:
 
-* [New pkgdown article](https://davisvaughan.github.io/furrr/articles/articles/progress.html)
+* [New pkgdown article](https://furrr.futureverse.org/articles/articles/progress.html)
   on using furrr with [progressr](https://CRAN.R-project.org/package=progressr)
   for generating progress updates.
 
-* [New pkgdown article](https://davisvaughan.github.io/furrr/articles/articles/carrier.html)
+* [New pkgdown article](https://furrr.futureverse.org/articles/articles/carrier.html)
   discussing an alternative strategy to automatic globals detection using
   the [carrier](https://CRAN.R-project.org/package=carrier) package.
 
-* [New pkgdown article](https://davisvaughan.github.io/furrr/articles/articles/chunking.html)
+* [New pkgdown article](https://furrr.futureverse.org/articles/articles/chunking.html)
   discussing how furrr "chunks" input to send if off to workers.
 
-* [New pkgdown article](https://davisvaughan.github.io/furrr/articles/articles/gotchas.html)
+* [New pkgdown article](https://furrr.futureverse.org/articles/articles/gotchas.html)
   on common gotchas when using furrr.
 
-* [New pkgdown article](https://davisvaughan.github.io/furrr/articles/articles/remote-connections.html)
+* [New pkgdown article](https://furrr.futureverse.org/articles/articles/remote-connections.html)
   detailing how to use furrr with remote AWS EC2 connections.
 
 * `future_walk()` and friends have been added to mirror `purrr::walk()`.
