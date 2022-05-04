@@ -34,26 +34,25 @@ test_that("can detect globals from the caller environment (HenrikBengtsson/futur
 })
 
 test_that("can export globals with sequential futures", {
-  skip("Until HenrikBengtsson/future.apply#10 is fixed")
-
   plan(sequential)
 
   fn <- function(x) {
     exists("y")
   }
-
-  wrapper <- function(options = furrr_options()) {
-    y <- 1
-    future_map_lgl(1, fn, .options = options)
-  }
+  environment(fn) <- .GlobalEnv
 
   # With named list
   opts <- furrr_options(globals = list(y = 1))
   expect_identical(future_map_lgl(1:2, fn, .options = opts), c(TRUE, TRUE))
 
   # With character lookup in caller env
-  opts <- furrr_options(globals = "y")
-  expect_identical(wrapper(opts), TRUE)
+  wrapper <- function(fn) {
+    y <- 1
+    future_map_lgl(1, fn, .options = furrr_options(globals = "y"))
+  }
+  environment(wrapper) <- .GlobalEnv
+
+  expect_identical(wrapper(fn), TRUE)
 })
 
 test_that("validates `globals`", {
@@ -100,45 +99,84 @@ furrr_test_that("can use `stdout = FALSE`", {
   expect_silent(future_map(1:5, fn, .options = opts))
 })
 
+test_that("can use `stdout = NA` to not intercept at all", {
+  opts <- furrr_options(stdout = NA)
+
+  fn <- function(x) {
+    con <- stdout()
+    write("hello", con)
+    x
+  }
+
+  # Output is likely shown for sequential backends
+  plan(sequential)
+  expect_snapshot(future_map(1:2, fn, .options = opts))
+
+  # Output is likely not passed back from the other R session
+  # (because it isn't handled or captured at all)
+  plan(multisession, workers = supported_max_cores("multisession"))
+  on.exit(plan(sequential), add = TRUE)
+  expect_snapshot(future_map(1:2, fn, .options = opts))
+})
+
 test_that("validates `stdout`", {
-  expect_error(furrr_options(stdout = "x"))
-  expect_error(furrr_options(stdout = c(TRUE, TRUE)))
+  expect_snapshot({
+    (expect_error(furrr_options(stdout = "x")))
+    (expect_error(furrr_options(stdout = c(TRUE, TRUE))))
+  })
 })
 
 # ------------------------------------------------------------------------------
 # furrr_options(conditions =)
 
-test_that("can capture no conditions", {
-  # Only works when not doing sequential, see HenrikBengtsson/future#403
-  plan(multisession, workers = 2)
-  on.exit(plan(sequential), add = TRUE)
-
-  opts <- furrr_options(conditions = character())
-
+furrr_test_that("can capture no conditions", {
   fn <- function(x) {
     warning("hello")
     x
   }
 
+  opts <- furrr_options(conditions = character())
   expect_warning(future_map(1:5, fn, .options = opts), NA)
 })
 
+test_that("can avoid handling conditions altogether", {
+  fn <- function(x) {
+    warning("hello")
+    x
+  }
+
+  opts <- furrr_options(conditions = NULL)
+
+  # Warning is likely shown for sequential backends
+  plan(sequential)
+  expect_snapshot(future_map(1:5, fn, .options = opts))
+
+  # Warning is likely not passed back from the other R session
+  # (because it isn't handled or captured at all)
+  plan(multisession, workers = supported_max_cores("multisession"))
+  on.exit(plan(sequential), add = TRUE)
+  expect_snapshot(future_map(1:5, fn, .options = opts))
+})
+
+furrr_test_that("can selectively avoid conditions", {
+  fn <- function(x) {
+    rlang::warn("classed warning", class = "ignore_me")
+    rlang::warn("unclassed warning", class = "dont_ignore_me")
+    x
+  }
+
+  # Both warnings are shown
+  expect_warning(expect_warning(future_map(1, fn), class = "ignore_me"), class = "dont_ignore_me")
+
+  # Only dont_ignore_me is shown
+  opts <- furrr_options(conditions = structure("condition", exclude = "ignore_me"))
+  expect_warning(future_map(1, fn, .options = opts), class = "dont_ignore_me")
+})
+
 test_that("validates `conditions`", {
-  expect_error(furrr_options(conditions = 1))
-})
-
-# ------------------------------------------------------------------------------
-# furrr_options(lazy =)
-
-furrr_test_that("can use lazy futures", {
-  opts <- furrr_options(lazy = TRUE)
-  expect_identical(future_map(1:5, ~.x, .options = opts), as.list(1:5))
-})
-
-test_that("validates `lazy`", {
-  expect_error(furrr_options(lazy = 2))
-  expect_error(furrr_options(lazy = NA))
-  expect_error(furrr_options(lazy = c(TRUE, FALSE)))
+  expect_snapshot({
+    (expect_error(furrr_options(conditions = 1)))
+  })
 })
 
 # ------------------------------------------------------------------------------

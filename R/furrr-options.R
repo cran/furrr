@@ -8,17 +8,16 @@
 #'
 #' @param stdout A logical.
 #'
-#'   - If `TRUE`, standard output of the underlying futures is captured and
-#'     relayed as soon as possible.
+#'   - If `TRUE`, standard output of the underlying futures is relayed as soon
+#'   as possible.
 #'
 #'   - If `FALSE`, output is silenced by sinking it to the null device.
 #'
-#'   - If `NA`, output is not intercepted. This is not recommended.
-#'
-#' @param conditions A character string of conditions classes to be captured
-#'   and relayed. The default is the same as the condition argument of
-#'   [future::Future()]. To not intercept conditions, use
-#'   `conditions = character(0L)`. Errors are always relayed.
+#' @param conditions A character string of conditions classes to be relayed.
+#'   The default is to relay all conditions, including messages and warnings.
+#'   Errors are always relayed. To not relay any conditions (besides errors),
+#'   use `conditions = character()`. To selectively ignore specific classes,
+#'   use `conditions = structure("condition", exclude = "message")`.
 #'
 #' @param globals A logical, a character vector, a named list, or `NULL` for
 #'   controlling how globals are handled. For details, see the
@@ -27,9 +26,6 @@
 #' @param packages A character vector, or `NULL`. If supplied, this specifies
 #'   packages that are guaranteed to be attached in the R environment where the
 #'   future is evaluated.
-#'
-#' @param lazy A logical. Specifies whether futures should be resolved
-#'   lazily or eagerly.
 #'
 #' @param seed A logical, an integer of length `1` or `7`, a list of
 #'   `length(.x)` with pre-generated random seeds, or `NULL`. For details, see
@@ -124,21 +120,19 @@
 #' furrr_options()
 furrr_options <- function(...,
                           stdout = TRUE,
-                          conditions = NULL,
+                          conditions = "condition",
                           globals = TRUE,
                           packages = NULL,
-                          lazy = FALSE,
                           seed = FALSE,
                           scheduling = 1.0,
                           chunk_size = NULL,
                           prefix = NULL) {
-  ellipsis::check_dots_empty()
+  check_dots_empty()
 
   stdout <- validate_stdout(stdout)
   conditions <- validate_conditions(conditions)
   globals <- validate_globals(globals)
   packages <- validate_packages(packages)
-  lazy <- validate_lazy(lazy)
   seed <- validate_seed(seed)
   scheduling <- validate_scheduling(scheduling)
   chunk_size <- validate_chunk_size(chunk_size)
@@ -149,7 +143,6 @@ furrr_options <- function(...,
     conditions = conditions,
     globals = globals,
     packages = packages,
-    lazy = lazy,
     seed = seed,
     scheduling = scheduling,
     chunk_size = chunk_size,
@@ -169,29 +162,27 @@ print.furrr_options <- function(x, ...) {
 #' Deprecated furrr options
 #'
 #' @description
-#' `r lifecycle::badge("deprecated")`
+#' `r lifecycle::badge("defunct")`
 #'
-#' `future_options()` has been deprecated in favor of [furrr_options()] as
-#' of furrr 0.2.0.
+#' As of furrr 0.3.0, `future_options()` is defunct in favor of
+#' [furrr_options()].
 #'
 #' @inheritParams furrr_options
 #'
 #' @keywords internal
 #' @export
 #' @examples
-#' future_options()
+#' try(future_options())
 future_options <- function(globals = TRUE,
                            packages = NULL,
                            seed = FALSE,
-                           lazy = FALSE,
                            scheduling = 1.0) {
-  lifecycle::deprecate_warn("0.2.0", "future_options()", "furrr_options()")
+  lifecycle::deprecate_stop("0.3.0", "future_options()", "furrr_options()")
 
   furrr_options(
     globals = globals,
     packages = packages,
     seed = seed,
-    lazy = lazy,
     scheduling = scheduling
   )
 }
@@ -214,11 +205,37 @@ is_furrr_options <- function(x) {
 
 validate_stdout <- function(x) {
   vctrs::vec_assert(x, size = 1L, arg = "stdout")
-  vctrs::vec_cast(x, logical(), x_arg = "stdout")
+
+  # Allowed to be `NA`, as this means output is not intercepted.
+  # We test for this but it is explicitly not recommended by future so we don't
+  # document it.
+  if (!is.logical(x)) {
+    abort("`stdout` must be `TRUE`, `FALSE`, or `NA`.")
+  }
+
+  # Always drop stdout from the future objects.
+  # Only the values are ever returned, so it is useless and potentially
+  # expensive to transfer this back from the workers (#216).
+  attr(x, "drop") <- TRUE
+
+  x
 }
 
 validate_conditions <- function(x) {
-  vctrs::vec_cast(x, character(), x_arg = "conditions")
+  if (is.null(x)) {
+    return(NULL)
+  }
+
+  if (!is.character(x)) {
+    abort("`conditions` must be a character vector.")
+  }
+
+  # Always drop conditions from the future objects.
+  # Only the values are ever returned, so it is useless and potentially
+  # expensive to transfer these back from the workers (#216).
+  attr(x, "drop") <- TRUE
+
+  x
 }
 
 validate_globals <- function(x) {
@@ -258,17 +275,6 @@ validate_packages <- function(x) {
 
   if (any(is.na(x))) {
     abort("`packages` can't be `NA`.")
-  }
-
-  x
-}
-
-validate_lazy <- function(x) {
-  vctrs::vec_assert(x, size = 1, arg = "lazy")
-  x <- vctrs::vec_cast(x, logical(), x_arg = "lazy")
-
-  if (is.na(x)) {
-    abort("`lazy` can't be `NA`.")
   }
 
   x

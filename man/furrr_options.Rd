@@ -7,10 +7,9 @@
 furrr_options(
   ...,
   stdout = TRUE,
-  conditions = NULL,
+  conditions = "condition",
   globals = TRUE,
   packages = NULL,
-  lazy = FALSE,
   seed = FALSE,
   scheduling = 1,
   chunk_size = NULL,
@@ -23,16 +22,16 @@ be empty.}
 
 \item{stdout}{A logical.
 \itemize{
-\item If \code{TRUE}, standard output of the underlying futures is captured and
-relayed as soon as possible.
+\item If \code{TRUE}, standard output of the underlying futures is relayed as soon
+as possible.
 \item If \code{FALSE}, output is silenced by sinking it to the null device.
-\item If \code{NA}, output is not intercepted. This is not recommended.
 }}
 
-\item{conditions}{A character string of conditions classes to be captured
-and relayed. The default is the same as the condition argument of
-\code{\link[future:Future-class]{future::Future()}}. To not intercept conditions, use
-\code{conditions = character(0L)}. Errors are always relayed.}
+\item{conditions}{A character string of conditions classes to be relayed.
+The default is to relay all conditions, including messages and warnings.
+Errors are always relayed. To not relay any conditions (besides errors),
+use \code{conditions = character()}. To selectively ignore specific classes,
+use \code{conditions = structure("condition", exclude = "message")}.}
 
 \item{globals}{A logical, a character vector, a named list, or \code{NULL} for
 controlling how globals are handled. For details, see the
@@ -41,9 +40,6 @@ controlling how globals are handled. For details, see the
 \item{packages}{A character vector, or \code{NULL}. If supplied, this specifies
 packages that are guaranteed to be attached in the R environment where the
 future is evaluated.}
-
-\item{lazy}{A logical. Specifies whether futures should be resolved
-lazily or eagerly.}
 
 \item{seed}{A logical, an integer of length \code{1} or \code{7}, a list of
 \code{length(.x)} with pre-generated random seeds, or \code{NULL}. For details, see

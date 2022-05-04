@@ -7,10 +7,9 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/furrr)](https://cran.r-project.org/package=furrr)
-[![R build
-status](https://github.com/DavisVaughan/furrr/workflows/R-CMD-check/badge.svg)](https://github.com/DavisVaughan/furrr/actions)
+[![R-CMD-check](https://github.com/DavisVaughan/furrr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/DavisVaughan/furrr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/DavisVaughan/furrr/branch/master/graph/badge.svg)](https://codecov.io/gh/DavisVaughan/furrr?branch=master)
+coverage](https://codecov.io/gh/DavisVaughan/furrr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/DavisVaughan/furrr?branch=main)
 <!-- badges: end -->
 
 ## Overview

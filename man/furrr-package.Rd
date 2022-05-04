@@ -8,15 +8,13 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Implementations of the family of map() functions
-    from 'purrr' that can be resolved using any 'future'-supported
-    backend, e.g. parallel on the local machine or distributed on a
-    compute cluster.
+Implementations of the family of map() functions from 'purrr' that can be resolved using any 'future'-supported backend, e.g. parallel on the local machine or distributed on a compute cluster.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://github.com/DavisVaughan/furrr}
+  \item \url{https://furrr.futureverse.org/}
   \item Report bugs at \url{https://github.com/DavisVaughan/furrr/issues}
 }
 
@@ -31,7 +29,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item RStudio [copyright holder]
+  \item RStudio [copyright holder, funder]
 }
 
 }

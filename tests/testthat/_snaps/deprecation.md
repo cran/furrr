@@ -1,10 +1,9 @@
-# deprecated `future_options()` warns when used
+# `future_options()` is hard deprecated
 
     Code
       future_options()
-    Warning <lifecycle_warning_deprecated>
-      `future_options()` was deprecated in furrr 0.2.0.
+    Condition
+      Error:
+      ! `future_options()` was deprecated in furrr 0.3.0 and is now defunct.
       Please use `furrr_options()` instead.
-    Output
-      <furrr_options>
 
