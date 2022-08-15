@@ -1,7 +1,7 @@
-a0f5d5cbff5ce2de9a85570f27332bbf *DESCRIPTION
+77910027d26851bb5cc32ed1f23499bd *DESCRIPTION
 0578b84ee28af684bb8cefb871d81d75 *LICENSE
 af1cc35451d58119cee6451da611608c *NAMESPACE
-d467c132973e61dc8a901638634fa0b1 *NEWS.md
+544823c2e6951a373cb2b5a82a8d05fc *NEWS.md
 db7431ba121e59feb1783bb83b7eca3c *R/chunks.R
 8a67da7664817127867758c87a2a3647 *R/furrr-options.R
 d158cb32ac297e8987551dd456c1ec82 *R/furrr-package.R
@@ -30,12 +30,12 @@ c3978703d8f40f2679795335715e98f4 *man/figures/lifecycle-experimental.svg
 53b3f893324260b737b3c46ed2a0e643 *man/figures/lifecycle-stable.svg
 1c1fe7a759b86dc6dbcbe7797ab8246c *man/figures/lifecycle-superseded.svg
 6025d38d38f4fc7dc788b4389471738e *man/figures/logo.png
-506b701bad1b619fabd4694b02cf3105 *man/furrr-package.Rd
+af53214ff648ee705dd0cbc3a1404344 *man/furrr-package.Rd
 c8575755ae701f7ebf06169b3e3b1f18 *man/furrr_options.Rd
 96a5c62c806a9c572bd44c0e8f08a5aa *man/future_imap.Rd
 4840335292595d5acae90f37eb210fa6 *man/future_invoke_map.Rd
 ded7c4f9d2c235f621319221b4127dd2 *man/future_map.Rd
-953b987dbc81939af3d2ed7217b28f76 *man/future_map2.Rd
+9942fd5c0949d7db6ceb7a471e6e99a0 *man/future_map2.Rd
 f1a626b1cc35d737f252e6bda59bf455 *man/future_map_if.Rd
 3ecca365d0d820cc6c8df81f345edb32 *man/future_modify.Rd
 d7e17114c23b8d7bc95acbe0bce0fe26 *man/future_options.Rd

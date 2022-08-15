@@ -1,6 +1,6 @@
 Package: furrr
 Title: Apply Mapping Functions in Parallel using Futures
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(
     person("Davis", "Vaughan", , "davis@rstudio.com", role = c("aut", "cre")),
     person("Matt", "Dancho", , "mdancho@business-science.io", role = "aut"),
@@ -21,12 +21,12 @@ Suggests: carrier, covr, dplyr (>= 0.7.4), knitr, listenv (>= 0.6.0),
 Config/Needs/website: progressr
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 NeedsCompilation: no
-Packaged: 2022-05-04 14:36:06 UTC; davis
+Packaged: 2022-08-15 19:00:06 UTC; davis
 Author: Davis Vaughan [aut, cre],
   Matt Dancho [aut],
   RStudio [cph, fnd]
 Maintainer: Davis Vaughan <davis@rstudio.com>
 Repository: CRAN
-Date/Publication: 2022-05-04 15:50:02 UTC
+Date/Publication: 2022-08-15 19:40:02 UTC
